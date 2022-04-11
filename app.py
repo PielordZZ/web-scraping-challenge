@@ -7,26 +7,32 @@ app.config['MONGO_URI']= "mongodb://localhost:27017/myDatabase"
 mongo = PyMongo(app)
 
 info = None
-if info == None:
-    info=scrape_mars.scrape()
+
 
 
 @app.route('/')
 def index():
-    
-    return render_template('index.html',fi=app.info['featured image'], h1=app.info['hemispheres'][0],\
-        h2=app.info['hemispheres'][1],h3=app.info['hemispheres'][2],h4=app.info['hemispheres'][3],\
-            table=app.info['table'],news=app.info['news_p'],headline=app.info['news_title'])
+    global info
+    if info == None:
+        info=scrape_mars.scrape()
+    return render_template('index.html',fi=info['featured image'], h1=info['hemispheres'][0],\
+        h2=info['hemispheres'][1],h3=info['hemispheres'][2],h4=info['hemispheres'][3],\
+            table=info['table'],news=info['news_p'],headline=info['news_title'])
 
 
 @app.route('/scrape')
 def get_info():
-    app.info =scrape_mars.scrape()
-    time.sleep(3)
-    return redirect('..', code=301)
-
+    global info
+    info = scrape_mars.scrape()
+    for i in range(30):
+        time.sleep(1)
+        if i==20:
+            return redirect('localhost:5000', code=301)
+    
+#return json info for debugging
 @app.route('/json')
 def display_info():
+    global info
     return info
  
 if __name__ == "__main__":

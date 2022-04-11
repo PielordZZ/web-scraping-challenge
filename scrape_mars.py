@@ -84,5 +84,5 @@ def scrape():
         image_urls.append(temp_string)
 
     call_return['hemispheres'] = image_urls
-
+    browser.quit()
     return call_return
