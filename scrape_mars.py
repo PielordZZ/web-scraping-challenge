@@ -76,8 +76,12 @@ def scrape():
 
     image_urls =[]
     for image in images:
-        temp_string = image['src'].split('_')
-        image_urls.append(url+'images/'+temp_string[-3]+'_'+temp_string[-2])
+        temp_string = "https://marshemispheres.com/"+image['src']
+
+        #this gets it as intended for assignment however it gives a .tif file which does not display correctly
+        # temp_string = image['src'].split('_')
+        # temp_string=url+'images/'+temp_string[-3]+'_'+temp_string[-2]
+        image_urls.append(temp_string)
 
     call_return['hemispheres'] = image_urls
 
